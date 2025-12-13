@@ -52,7 +52,7 @@ class Song:
                 {
                     "persistedQuery": {
                         "version": 1,
-                        "sha256Hash": self.base.part_hash("getTrack"),
+                        "sha256Hash": "612585ae06ba435ad26369870deaae23b5c8800a256cd8a57e08eddc25a37294",  #self.base.part_hash("getTrack"),
                     }
                 }
             ),
