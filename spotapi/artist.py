@@ -66,7 +66,7 @@ class Artist:
                 {
                     "persistedQuery": {
                         "version": 1,
-                        "sha256Hash": "446130b4a0aa6522a686aafccddb0ae849165b5e0436fd802f96e0243617b5d8", #self.base.part_hash("searchArtists"),
+                        "sha256Hash": self.base.part_hash("searchArtists"),
                     }
                 }
             ),
@@ -102,7 +102,7 @@ class Artist:
                 {
                     "persistedQuery": {
                         "version": 1,
-                        "sha256Hash": self.base.part_hash("queryArtistOverview"),
+                        "sha256Hash": "446130b4a0aa6522a686aafccddb0ae849165b5e0436fd802f96e0243617b5d8", #self.base.part_hash("queryArtistOverview"),
                     }
                 }
             ),
