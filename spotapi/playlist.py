@@ -69,7 +69,7 @@ class PublicPlaylist:
                 {
                     "persistedQuery": {
                         "version": 1,
-                        "sha256Hash": self.base.part_hash("fetchPlaylist"),
+                        "sha256Hash": "bb67e0af06e8d6f52b531f97468ee4acd44cd0f82b988e15c2ea47b1148efc77", #self.base.part_hash("fetchPlaylist"),
                     }
                 }
             ),
