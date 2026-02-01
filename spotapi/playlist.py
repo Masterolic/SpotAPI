@@ -28,26 +28,19 @@ class PublicPlaylist:
     """
 
     __slots__ = (
-        "base",
-        "playlist_id",
-        "playlist_link",
+        "base"
     )
 
     def __init__(
         self,
-        playlist: str,
         /,
         *,
         client: TLSClient = TLSClient("chrome_120", "", auto_retries=3),
     ) -> None:
         self.base = BaseClient(client=client)
-        self.playlist_id = (
-            playlist.split("playlist/")[-1] if "playlist" in playlist else playlist
-        )
-        self.playlist_link = f"https://open.spotify.com/playlist/{self.playlist_id}"
-
     def get_playlist_info(
         self,
+        playlist_id: str,
         limit: int = 25,
         *,
         offset: int = 0,
@@ -59,7 +52,7 @@ class PublicPlaylist:
             "operationName": "fetchPlaylist",
             "variables": json.dumps(
                 {
-                    "uri": f"spotify:playlist:{self.playlist_id}",
+                    "uri": f"spotify:playlist:{playlist_id}",
                     "offset": offset,
                     "limit": limit,
                     "enableWatchFeedEntrypoint": enable_watch_feed_entrypoint,
@@ -130,16 +123,9 @@ class PrivatePlaylist:
     def __init__(
         self,
         login: Login,
-        playlist: str | None = None,
     ) -> None:
         if not login.logged_in:
             raise ValueError("Must be logged in")
-
-        if playlist:
-            self.playlist_id = (
-                playlist.split("playlist/")[-1] if "playlist" in playlist else playlist
-            )
-
         self.base = BaseClient(login.client)
         self.login = login
         self.user = User(login)
@@ -156,7 +142,7 @@ class PrivatePlaylist:
         setattr(self, "playlist_id", playlist)
         self._playlist = True
 
-    def add_to_library(self) -> None:
+    def add_to_library(self, playlist_id: str) -> None:
         """Adds the playlist to your library"""
         if not self._playlist:
             raise ValueError("Playlist not set")
@@ -171,7 +157,7 @@ class PrivatePlaylist:
                             "add": {
                                 "items": [
                                     {
-                                        "uri": f"spotify:playlist:{self.playlist_id}",
+                                        "uri": f"spotify:playlist:{playlist_id}",
                                         "attributes": {
                                             "timestamp": int(time.time()),
                                             "formatAttributes": [],
@@ -198,7 +184,7 @@ class PrivatePlaylist:
                 "Could not add playlist to library", error=resp.error.string
             )
 
-    def remove_from_library(self) -> None:
+    def remove_from_library(self, playlist_id: str) -> None:
         """Removes the playlist from your library"""
         if not self._playlist:
             raise ValueError("Playlist not set")
@@ -212,7 +198,7 @@ class PrivatePlaylist:
                             "kind": 3,
                             "rem": {
                                 "items": [
-                                    {"uri": f"spotify:playlist:{self.playlist_id}"}
+                                    {"uri": f"spotify:playlist:{playlist_id}"}
                                 ],
                                 "itemsAsKey": True,
                             },
@@ -349,11 +335,11 @@ class PrivatePlaylist:
 
         return playlist_id
 
-    def recommended_songs(self, num_songs: int = 20) -> Mapping[str, Any]:
+    def recommended_songs(self, playlist_id: str, num_songs: int = 20) -> Mapping[str, Any]:
         """Gets the recommended songs for the playlist"""
         url = "https://spclient.wg.spotify.com/playlistextender/extendp/"
         payload = {
-            "playlistURI": f"spotify:playlist:{self.playlist_id}",
+            "playlistURI": f"spotify:playlist:{playlist_id}",
             "trackSkipIDs": [],
             "numResults": num_songs,
         }
