@@ -58,6 +58,12 @@ class StdClient:
         err = "Unknown"
         for _ in range(self.auto_retries):
             try:
+                if "color-lyrics" in url:
+                    headers = kwargs.get("headers")
+                    headers["Accept"] = "application/json"
+                    headers["Accept-Language"] = "en"
+                    headers["App-Platform"] = "WebPlayer"
+                    kwargs["headers"] = headers
                 response = self._client.request(method.upper(), url, **kwargs)
             except Exception as e:
                 err = str(e)
