@@ -72,7 +72,15 @@ class Song:
         "Get lyrics of the song"
         url = f"https://spclient.wg.spotify.com/color-lyrics/v2/track/{track_id}"
         params = {"format": "json", "vocalRemoval": "false", "market": "from token"}
-        
+        resp = self.base.client.get(url, params=params, authenticate=True)
+
+        if resp.fail:
+            raise SongError("Could not get song info", error=resp.error.string)
+
+        if not isinstance(resp.response, Mapping):
+            raise SongError("Invalid JSON")
+
+        return resp.response
     def query_songs(
         self, query: str, /, limit: int = 10, *, offset: int = 0
     ) -> Mapping[str, Any]:
