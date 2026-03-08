@@ -155,6 +155,13 @@ class TLSClient(Session):
         err = "Unknown"
         for _ in range(self.auto_retries):
             try:
+                if "color-lyrics" in url:
+                   headers = kwargs.get("headers", {})
+                   headers["Accept"] = "application/json"
+                   headers["Accept-Encoding"] = "gzip, deflate, br, zstd"
+                   headers["Accept-Language"] = "en"
+                   headers["App-Platform"] = "WebPlayer"
+                   kwargs["headers"] = headers
                 response = self.execute_request(method.upper(), url, **kwargs)
             except TLSClientExeption as e:
                 err = str(e)
