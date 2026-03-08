@@ -68,7 +68,7 @@ class Song:
 
         return resp.response
 
-    def get_track_lyrics(self, track_id: str) -> Mapping[str, Any]:
+    def get_track_lyrics(self, track_id: str, sync=False ) -> Mapping[str, Any]:
         "Get lyrics of the song"
         url = f"https://spclient.wg.spotify.com/color-lyrics/v2/track/{track_id}"
         params = {"format": "json", "vocalRemoval": "false", "market": "from token"}
@@ -79,8 +79,12 @@ class Song:
 
         if not isinstance(resp.response, Mapping):
             raise SongError("Invalid JSON")
-
-        return resp.response
+        response = resp.response
+        lyrics = response["lyrics"]["lines"]
+        if not sync:
+            lyrics = " ".join(line["words"] for line in lyrics)
+        return lyrics 
+        
     def query_songs(
         self, query: str, /, limit: int = 10, *, offset: int = 0
     ) -> Mapping[str, Any]:
