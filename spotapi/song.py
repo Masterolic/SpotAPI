@@ -83,7 +83,7 @@ class Song:
         lyrics = response["lyrics"]["lines"]
         if not sync:
             lyrics = " ".join(line["words"] for line in lyrics)
-        return lyrics 
+        return {"data": lyrics} 
         
     def query_songs(
         self, query: str, /, limit: int = 10, *, offset: int = 0
