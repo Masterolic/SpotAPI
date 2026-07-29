@@ -55,7 +55,7 @@ class PublicAlbum:
                 {
                     "persistedQuery": {
                         "version": 1,
-                        "sha256Hash": self.base.part_hash("getAlbum"),
+                        "sha256Hash": "b9bfabef66ed756e5e13f68a942deb60bd4125ec1f1be8cc42769dc0259b4b10" #self.base.part_hash("getAlbum"),
                     }
                 }
             ),
