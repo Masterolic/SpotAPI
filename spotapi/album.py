@@ -30,16 +30,15 @@ class PublicAlbum:
 
     def __init__(
         self,
-        album: str,
         /,
         *,
         client: TLSClient = TLSClient("chrome_120", "", auto_retries=3),
     ) -> None:
         self.base = BaseClient(client=client)
-        self.album_id = album.split("album/")[-1] if "album" in album else album
-        self.album_link = f"https://open.spotify.com/album/{self.album_id}"
+    #    self.album_id = album.split("album/")[-1] if "album" in album else album
+  #      self.album_link = f"https://open.spotify.com/album/{self.album_id}"
 
-    def get_album_info(self, limit: int = 25, *, offset: int = 0) -> Mapping[str, Any]:
+    def get_album_info(self, album_id: str, limit: int = 25, *, offset: int = 0) -> Mapping[str, Any]:
         """Gets the public public information"""
         url = "https://api-partner.spotify.com/pathfinder/v1/query"
         params = {
@@ -47,7 +46,7 @@ class PublicAlbum:
             "variables": json.dumps(
                 {
                     "locale": "",
-                    "uri": f"spotify:album:{self.album_id}",
+                    "uri": f"spotify:album:{album_id}",
                     "offset": offset,
                     "limit": limit,
                 }
