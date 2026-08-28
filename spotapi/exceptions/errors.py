@@ -7,6 +7,7 @@ __all__ = [
     "PlaylistError",
     "SaverError",
     "SongError",
+    "LyricsNotAvailableError",
     "ArtistError",
     "BaseClientError",
     "RequestError",
@@ -61,6 +62,11 @@ class SaverError(ParentException):
 class SongError(ParentException):
     pass
 
+
+# Song.py exceptions
+class LyricsNotAvailableError(ParentException):
+    pass
+    
 
 # Artist.py exceptions
 class ArtistError(ParentException):
