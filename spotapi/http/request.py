@@ -203,7 +203,7 @@ class TLSClient(Session):
         if danger and self.fail_exception and resp.fail:
             raise self.fail_exception(
                 f"Could not {method} {str(response.url).split('?')[0]}. Status Code: {resp.status_code}",
-                "Request Failed.",
+                "Request Failed.", resp.status_code,
             )
 
         return resp
