@@ -1,7 +1,7 @@
 import json
 from typing import Any, List, Tuple
 from spotapi.types.annotations import enforce
-from spotapi.exceptions import SongError
+from spotapi.exceptions import SongError, LyricsNotAvailableError
 from spotapi.http.request import TLSClient
 from spotapi.client import BaseClient
 from collections.abc import Mapping, Iterable, Generator
@@ -77,6 +77,8 @@ class Song:
         except Exception as e:
             if e.status_code == 404:
                raise LyricsNotAvailableError("Lyrics not found", e.status_code)
+            else:
+                raise
         if resp.fail:
             raise SongError("Could not get song info", error=resp.error.string)
 
