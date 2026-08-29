@@ -78,7 +78,7 @@ class Song:
             if e.status_code == 404:
                raise LyricsNotAvailableError("Lyrics not found", e.status_code)
             else:
-                raise
+                raise Exception(f"Could not get song info status_code = {e.status_code}")
         if resp.fail:
             raise SongError("Could not get song info", error=resp.error.string)
 
