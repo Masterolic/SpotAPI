@@ -22,7 +22,7 @@ __all__ = [
 
 
 class ParentException(Exception):
-    def __init__(self, message: str, error: str, code: int = 500 | None = None) -> None:
+    def __init__(self, message: str, error: str, code: int | None = 500) -> None:
         super().__init__(message)
         self.error = error
         self.status_code = code
