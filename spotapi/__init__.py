@@ -24,3 +24,4 @@ from spotapi.public import *
 
 __author__ = "Aran"
 __license__ = "GPL 3.0"
+from spotapi.search import *
