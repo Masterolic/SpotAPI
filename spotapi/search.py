@@ -99,7 +99,7 @@ class Search:
                 {
                     "persistedQuery": {
                         "version": 1,
-                        "sha256Hash": self.base.part_hash("searchTopResultsList"),
+                        "sha256Hash": "dd78eaff943eba629ed70ee25517b9cea0dcaa41193e2592ae2727660b21892c", #self.base.part_hash("searchTopResultsList"),
                     }
                 },
                 separators=(",", ":"),
