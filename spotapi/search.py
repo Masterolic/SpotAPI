@@ -145,7 +145,7 @@ class Search:
             section_filters=section_filters,
             )
         except SearchError as e:
-            if e.status_code === 401:
+            if e.status_code == 401:
                raise SearchError("Re-Authentication required status_code = %s", e.status_code)
             else:
                 raise SearchError("Search Error occurred unknown due to %s", e.error)
