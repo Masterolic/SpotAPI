@@ -57,7 +57,10 @@ class PlaylistError(ParentException):
 class SaverError(ParentException):
     pass
 
-
+# Search.py exceptions
+class SearchError(ParentException):
+    pass
+    
 # Song.py exceptions
 class SongError(ParentException):
     pass
