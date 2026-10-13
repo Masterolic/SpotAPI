@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Callable, Type, Dict
 from tls_client.settings import ClientIdentifiers
-from tls_client.exceptions import TLSClientExeption
+from tls_client.exceptions import TLSClientException
 from tls_client.response import Response as TLSResponse
 from spotapi.exceptions import ParentException, RequestError
 from spotapi.http.data import Response
