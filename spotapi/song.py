@@ -78,12 +78,12 @@ class Song:
             if e.status_code == 404:
                raise LyricsNotAvailableError("Lyrics not found", e.status_code)
             else:
-                raise Exception(f"Could not get song info status_code = {e.status_code}")
+                raise LyricsNotAvailableError(f"Could not get song info status_code = {e.status_code}")
         if resp.fail:
-            raise SongError("Could not get song info", error=resp.error.string)
+            raise LyricsNotAvailableError("Could not get song info", error=resp.error.string)
 
         if not isinstance(resp.response, Mapping):
-            raise SongError("Invalid JSON")
+            raise LyricsNotAvailableError("Invalid JSON")
         response = resp.response
         lyrics = response["lyrics"]["lines"]
         if not sync:
