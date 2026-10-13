@@ -8,6 +8,8 @@ from spotapi.client import BaseClient
 from spotapi.http.request import TLSClient
 from spotapi.types.annotations import enforce
 
+from spotapi.exceptions.errors import SearchError
+
 __all__ = ["Search"]
 
 
@@ -134,10 +136,19 @@ class Search:
         section_filters: Sequence[str] = ("GENERIC", "VIDEO_CONTENT"),
     ) -> Mapping[str, Any]:
         """Convenience alias for query_search."""
-        return self.query_search(
+        try:
+            return self.query_search(
             query,
             limit=limit,
             offset=offset,
             number_of_top_results=number_of_top_results,
             section_filters=section_filters,
-        )
+            )
+        except SearchError as e:
+            if e.status_code === 401:
+               raise SearchError("Re-Authentication required status_code = %s", e.status_code)
+            else:
+                raise SearchError("Search Error occurred unknown due to %s", e.error)
+                
+
+                                 
