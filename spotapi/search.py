@@ -108,20 +108,33 @@ class Search:
             ),
         }
 
-        resp = self.base.client.post(
-            url,
-            params=params,
-            authenticate=True,
-        )
+        resp = self.base.client.post(url, params=params, authenticate=True)
+
+        # Spotify web-player access tokens expire. Refresh and retry only once.
+        if resp.status_code == 401:
+            try:
+                self.base.refresh_session()
+                resp = self.base.client.post(url, params=params, authenticate=True)
+            except Exception as exc:
+                raise SearchError(
+                    "Spotify authentication refresh failed",
+                    error=str(exc),
+                    code=401,
+                ) from exc
 
         if resp.fail:
-            raise RuntimeError(
+            raise SearchError(
                 "Could not search Spotify",
-                resp.error.string,
+                error=resp.error.string,
+                code=resp.status_code,
             )
 
         if not isinstance(resp.response, Mapping):
-            raise RuntimeError("Invalid JSON response")
+            raise SearchError(
+                "Invalid JSON response",
+                error=str(resp.response),
+                code=resp.status_code,
+            )
 
         return resp.response
 
@@ -138,17 +151,19 @@ class Search:
         """Convenience alias for query_search."""
         try:
             return self.query_search(
-            query,
-            limit=limit,
-            offset=offset,
-            number_of_top_results=number_of_top_results,
-            section_filters=section_filters,
+                query,
+                limit=limit,
+                offset=offset,
+                number_of_top_results=number_of_top_results,
+                section_filters=section_filters,
             )
-        except SearchError as e:
-            if e.status_code == 401:
-               raise SearchError("Re-Authentication required status_code = %s", e.status_code)
-            else:
-                raise SearchError("Search Error occurred unknown due to %s", e.error)
+        except SearchError:
+            raise
+        except Exception as exc:
+            raise SearchError(
+                "Search failed unexpectedly",
+                error=str(exc),
+            ) from exc
                 
 
                                  
