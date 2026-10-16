@@ -115,13 +115,13 @@ class Search:
         )
 
         if resp.fail:
-            raise RuntimeError(
+            raise SearchError(
                 "Could not search Spotify",
                 resp.error.string,
             )
 
         if not isinstance(resp.response, Mapping):
-            raise RuntimeError("Invalid JSON response")
+            raise SearchError("Invalid JSON response")
 
         return resp.response
 
