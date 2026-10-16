@@ -138,6 +138,18 @@ class BaseClient:
             self.access_token = resp.response["accessToken"]
             self.client_id = resp.response["clientId"]
 
+    def refresh_session(self) -> None:
+        """Invalidate cached web-player credentials and obtain fresh ones."""
+        self.access_token = _Undefined
+        self.client_token = _Undefined
+        self.client_id = _Undefined
+        self.client_version = _Undefined
+        self.device_id = _Undefined
+        self.js_pack = _Undefined
+        self.raw_hashes = _Undefined
+        self.get_session()
+        self.get_client_token()
+
     def get_session(self) -> None:
         resp = self.client.get("https://open.spotify.com")
         if resp.fail:
